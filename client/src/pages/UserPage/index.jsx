@@ -29,17 +29,12 @@ export default function UserPage() {
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [initials, setInitials] = useState([]);
+  const [storageUser, setStorageUser] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
     localStorage.length === 0 ? navigate("/login") : null;
   }, []);
-
-  function handleName() {
-    const names =
-      localStorage.length !== 0 ? name.split(" ") : ["Alex", "Earle"];
-    setInitials([names[0][0], names[1][0]]);
-  }
 
   async function getCats() {
     setName(
@@ -49,14 +44,13 @@ export default function UserPage() {
     );
 
     setEmail(JSON.parse(localStorage.getItem("user")).email);
-    const response = await fetch("http://127.0.0.1:5000/pets");
+    const response = await fetch("https://catcareserver.onrender.com/pets");
     if (response.status == 200) {
       const array = await response.json();
       const cats = array.filter(
         (cat) => cat.user_id == JSON.parse(localStorage.getItem("user")).id
       );
       setCatData(cats);
-      handleName();
     } else {
       null;
     }
@@ -79,7 +73,10 @@ export default function UserPage() {
         meeting_id: appointmentDate.meetingId,
       }),
     };
-    const response = await fetch("http://127.0.0.1:5000/appointment", options);
+    const response = await fetch(
+      "https://catcareserver.onrender.com/appointment",
+      options
+    );
     setModalOpen(false);
     const data = await response.json();
   }
@@ -146,6 +143,7 @@ export default function UserPage() {
   return (
     <div
       className="profile-page"
+      role="container1"
       style={{
         backgroundColor: dark ? "#121212" : "whitesmoke",
         marginBottom: "-100px",
@@ -181,12 +179,13 @@ export default function UserPage() {
               borderRadius: "50%",
               backgroundColor: dark ? "#826BF5" : "#D3CCFA",
               color: dark ? "whitesmoke" : "#121212",
-              fontFamily: "'Jua', sans-serif",
+              fontFamily: "'Patua One', sans-serif",
               fontSize: "3rem",
             }}
           >
-            {catData ? `${initials[0]}${initials[1]}` : "loading"}
+            {name ? name[0] + name[name.indexOf(" ") + 1] : "loading"}
           </div>
+
           <Typography
             variant="h6"
             component="p"
@@ -197,7 +196,7 @@ export default function UserPage() {
               width: "100%",
               display: "block",
               lineHeight: 1.6,
-              fontFamily: "Jua",
+              fontFamily: "Patua One",
               textAlign: "center",
               color: dark ? "whitesmoke" : "#121212",
               // borderTop: "1px solid",
@@ -220,8 +219,8 @@ export default function UserPage() {
             value={value}
             className="calender"
           />
-          {catData.map((cat) => {
-            return <ProfileCat cat={cat} key={cat.id} />;
+          {catData.map((cat, index) => {
+            return <ProfileCat cat={cat} index={index} key={cat.id} />;
           })}
         </div>
       </div>
@@ -237,7 +236,7 @@ export default function UserPage() {
             variant="h5"
             component="h2"
             sx={{
-              fontFamily: "'Jua', sans-serif",
+              fontFamily: "'Patua One', sans-serif",
               color: dark ? "whitesmoke" : "black",
             }}
           >
@@ -317,7 +316,7 @@ export default function UserPage() {
         <h1
           style={{
             textAlign: "center",
-            fontFamily: "Jua",
+            fontFamily: "Patua One",
             padding: "40px 20px",
           }}
         >

@@ -10,36 +10,19 @@ import {
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import matchers from "@testing-library/jest-dom/matchers";
 import { NavLink, Link } from "react-router-dom";
-
+import QuestionContainer from "../QuestionContainer";
 import { CredentialsProvider } from "../../contexts";
-
-import LandingHeader from ".";
 
 expect.extend(matchers);
 
-describe("Join US", () => {
-  beforeAll(() => {
+describe("Question Container", () => {
+  it("Component is rendered", () => {
     render(
       <Router>
         <CredentialsProvider>
-          <LandingHeader />
+          <QuestionContainer />
         </CredentialsProvider>
       </Router>
     );
-  });
-
-  it("Links to register", () => {
-    expect(screen.getByText("Join Us").href).toBe(
-      "http://localhost:3000/register"
-    );
-  });
-
-  it("should render 2 buttons", () => {
-    expect(screen.getByRole("link", { name: "Log In" })).toBeTruthy();
-    expect(screen.getByRole("link", { name: "Join Us" })).toBeTruthy();
-  });
-
-  afterAll(() => {
-    cleanup();
   });
 });
