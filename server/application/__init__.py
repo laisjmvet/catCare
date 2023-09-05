@@ -6,11 +6,10 @@ from flask import Flask
 from flask_cors import CORS
 import os  # inbuilt python module
 from dotenv import load_dotenv
-
-load_dotenv()
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate  # db migration
+from flask_socketio import SocketIO
 
 load_dotenv()
 
@@ -31,10 +30,12 @@ login_manager.login_view = "login"
 login_manager.login_message_category = "info"
 
 # create an instance of SQLAlchemy, Migrate, and Bcrypt.
+
 db = SQLAlchemy()
 migrate = Migrate()
 bcrypt = Bcrypt()
 DATABASE_URL = os.environ["DATABASE_URL"]
+socketio = SocketIO()
 
 
 def create_app(env=None):
@@ -44,6 +45,7 @@ def create_app(env=None):
     app.secret_key = "secret-key"
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite://"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
+    app.config['SECRET_KEY'] = 'secret!'
 
     login_manager.init_app(app)
     bcrypt.init_app(app)
@@ -61,6 +63,7 @@ def create_app(env=None):
         app.config["SECRET_KEY"] = os.environ["SECRET_KEY"]
     # initialising the db and connecting to app
     db.init_app(app)
+    socketio.init_app(app)
     migrate.init_app(app, db)
     app.app_context().push()
     CORS(app)

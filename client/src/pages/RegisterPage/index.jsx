@@ -44,7 +44,8 @@ export default function RegisterPage() {
       }),
     };
     const response = await fetch(
-      "https://catcareserver.onrender.com/user",
+      "http://127.0.0.1:5000/user",
+      // "https://catcareserver.onrender.com/user",
       options
     );
     const data = await response.json();
