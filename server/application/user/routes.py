@@ -30,7 +30,6 @@ def index():
 def create_user():
     # retrieved data from client
     data = request.json
-    print(data)
     # created new user using the data
     new_user = Users(
         first_name=data["first_name"],

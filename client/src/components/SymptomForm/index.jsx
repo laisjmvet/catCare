@@ -1,11 +1,12 @@
 import React from "react";
 import SelectAnswer from "../SelectAnswer";
 import style from "./style.module.css";
+import DynamicQuestions from "../DynamicQuestions";
 
 export default function SymptomForm() {
   return (
     <div className={style["container"]}>
-      <SelectAnswer />
+      <DynamicQuestions />
     </div>
   );
 }

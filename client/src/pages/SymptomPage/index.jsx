@@ -10,11 +10,12 @@ import { useCredentials } from "../../contexts";
 import SymptomCat from "../../assets/cat-9152.png";
 import { useNavigate } from "react-router-dom";
 import io from "socket.io-client"; 
+//import { socket } from "../../socket.js"
 
-const socket = io("http://127.0.0.1:5000");
-
-
-
+// const socket = io("http://127.0.0.1:5000");
+// socket.on('connect', () => {
+//   console.log('Connected to server');
+// });
 
 export default function SymptomPage() {
   const [catData, setCatData] = useState([]);
@@ -23,13 +24,7 @@ export default function SymptomPage() {
   const [errorText, setErrorText] = useState(false);
   const { dark, setDark, profile, setProfile } = useCredentials();
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   // Emit an event when the socket connects
-  //   socket.on("connect", function () {
-  //     socket.emit("my event", { data: "I'm connected!" });
-  //   });
-  // }, []);
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     localStorage.length === 0 ? navigate("/login") : null;
