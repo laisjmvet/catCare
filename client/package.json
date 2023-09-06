@@ -38,7 +38,7 @@
     "react-simple-chatbot": "^0.6.1",
     "react-window": "^1.8.9",
     "socket.io": "^4.7.2",
-    "socket.io-client": "^2.5.0",
+    "socket.io-client": "^4.7.2",
     "vite": "^4.4.5",
     "vite-plugin-svgr": "^3.2.0",
     "vitest": "^0.33.0"

@@ -146,7 +146,7 @@ export default function CatRegisterForm({
       }),
     };
     const response = await fetch(
-      "https://catcareserver.onrender.com/pet",
+      "http://127.0.0.1:5000/pet",
       options
     );
     const data = await response.json();
@@ -182,7 +182,7 @@ export default function CatRegisterForm({
       }),
     };
     const response = await fetch(
-      `https://catcareserver.onrender.com/pet/${id}`,
+      `http://127.0.0.1:5000/pet/${id}`,
       options
     );
     const data = await response.json();

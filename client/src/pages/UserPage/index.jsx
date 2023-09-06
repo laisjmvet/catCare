@@ -44,7 +44,7 @@ export default function UserPage() {
     );
 
     setEmail(JSON.parse(localStorage.getItem("user")).email);
-    const response = await fetch("https://catcareserver.onrender.com/pets");
+    const response = await fetch("http://127.0.0.1:5000/pets",);
     if (response.status == 200) {
       const array = await response.json();
       const cats = array.filter(
@@ -74,7 +74,8 @@ export default function UserPage() {
       }),
     };
     const response = await fetch(
-      "https://catcareserver.onrender.com/appointment",
+      "http://127.0.0.1:5000/appointment",
+      // "https://catcareserver.onrender.com/appointment",
       options
     );
     setModalOpen(false);

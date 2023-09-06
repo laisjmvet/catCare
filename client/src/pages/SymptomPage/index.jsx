@@ -9,6 +9,12 @@ import { useSymptoms } from "../../contexts/";
 import { useCredentials } from "../../contexts";
 import SymptomCat from "../../assets/cat-9152.png";
 import { useNavigate } from "react-router-dom";
+import io from "socket.io-client"; 
+
+const socket = io("http://127.0.0.1:5000");
+
+
+
 
 export default function SymptomPage() {
   const [catData, setCatData] = useState([]);
@@ -17,6 +23,14 @@ export default function SymptomPage() {
   const [errorText, setErrorText] = useState(false);
   const { dark, setDark, profile, setProfile } = useCredentials();
   const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   // Emit an event when the socket connects
+  //   socket.on("connect", function () {
+  //     socket.emit("my event", { data: "I'm connected!" });
+  //   });
+  // }, []);
+
   useEffect(() => {
     localStorage.length === 0 ? navigate("/login") : null;
   }, []);
@@ -28,7 +42,7 @@ export default function SymptomPage() {
   } = useSymptoms();
 
   async function getCats() {
-    const response = await fetch("https://catcareserver.onrender.com/pets");
+    const response = await fetch("http://127.0.0.1:5000/pets");
     const array = await response.json();
     const cats = array.filter(
       (cat) => cat.user_id == JSON.parse(localStorage.getItem("user")).id

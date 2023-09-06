@@ -10,7 +10,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate  # db migration
 from flask_socketio import SocketIO
-
 load_dotenv()
 
 # methods from Flask-Login for session management.
@@ -63,7 +62,7 @@ def create_app(env=None):
         app.config["SECRET_KEY"] = os.environ["SECRET_KEY"]
     # initialising the db and connecting to app
     db.init_app(app)
-    socketio.init_app(app)
+    socketio.init_app(app, cors_allowed_origins="*")
     migrate.init_app(app, db)
     app.app_context().push()
     CORS(app)
