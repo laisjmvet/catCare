@@ -64,7 +64,7 @@ export const SymptomsProvider = ({ children }) => {
   const [answers, setAnswers] = useState([]);
   const [animation, setAnimation] = useState(true);
   const [differentAnswersIndex, setDifferentAnswersIndex] = useState(true);
-  const [dynamicQuestion, setDynamicQuestion] = useState([]);
+  const [dynamicQuestion, setDynamicQuestion] = useState("null");
 
   return (
     <SymptomsContext.Provider

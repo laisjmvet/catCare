@@ -60,7 +60,6 @@ export default function DynamicQuestions() {
   const handleQuestion = (questionSocket) => {
     console.log("Received question:", questionSocket);
     setDynamicQuestion(questionSocket)
-    console.log(dynamicQuestion, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
   };
 
   // Register the event listener for the question event

@@ -16,7 +16,7 @@ def handle_connect():
 
 def send_question():    
     question = questionsLogic.sendQuestions()
-    emit("question", question)
+    emit("question", question[0])
 
 @socketio.on("answer")
 def handle_answer(data):
