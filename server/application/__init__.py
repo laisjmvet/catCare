@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 from .db import db
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate  # db migration
-from flask_socketio import SocketIO
+from application.socketLib import socketLib
 load_dotenv()
 
 # methods from Flask-Login for session management.
@@ -32,8 +32,8 @@ login_manager.login_message_category = "info"
 
 migrate = Migrate()
 bcrypt = Bcrypt()
-DATABASE_URL = os.environ["DATABASE_URL"]
-socketio = SocketIO()
+
+
 
 
 def create_app(env=None):
@@ -61,7 +61,7 @@ def create_app(env=None):
         app.config["SECRET_KEY"] = os.environ["SECRET_KEY"]
     # initialising the db and connecting to app
     db.init_app(app)
-    socketio.init_app(app, cors_allowed_origins="*")
+    socketLib.socketio.init_app(app, cors_allowed_origins="*")
     migrate.init_app(app, db)
     app.app_context().push()
     CORS(app)

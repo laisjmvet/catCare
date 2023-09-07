@@ -24,13 +24,6 @@ export default function SymptomPage() {
   const { dark, setDark, profile, setProfile } = useCredentials();
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   // Emit an event when the socket connects
-  //   socket.on("connect", function () {
-  //     socket.emit("my event", { data: "I'm connected!" });
-  //   });
-  // }, []);
-
   useEffect(() => {
     localStorage.length === 0 ? navigate("/login") : null;
   }, []);

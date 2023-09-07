@@ -64,6 +64,7 @@ export const SymptomsProvider = ({ children }) => {
   const [answers, setAnswers] = useState([]);
   const [animation, setAnimation] = useState(true);
   const [differentAnswersIndex, setDifferentAnswersIndex] = useState(true);
+  const [dynamicQuestion, setDynamicQuestion] = useState([]);
 
   return (
     <SymptomsContext.Provider
@@ -78,6 +79,8 @@ export const SymptomsProvider = ({ children }) => {
         setAnimation,
         differentAnswersIndex,
         setDifferentAnswersIndex,
+        dynamicQuestion,
+        setDynamicQuestion
       }}
     >
       {children}
