@@ -11,11 +11,6 @@ import SymptomCat from "../../assets/cat-9152.png";
 import { useNavigate } from "react-router-dom";
 import io from "socket.io-client"; 
 
-const socket = io("http://127.0.0.1:5000");
-
-
-
-
 export default function SymptomPage() {
   const [catData, setCatData] = useState([]);
   const [selectedCat, setSelectedCat] = useState({});
@@ -23,6 +18,7 @@ export default function SymptomPage() {
   const [errorText, setErrorText] = useState(false);
   const { dark, setDark, profile, setProfile } = useCredentials();
   const navigate = useNavigate();
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     localStorage.length === 0 ? navigate("/login") : null;

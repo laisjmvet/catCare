@@ -74,7 +74,6 @@ export default function DynamicQuestions() {
     }
   }, [socket]);
 
-
   const nextQuestion = () => {
     if (selectedTick === null) {
       setErrorText(true);
