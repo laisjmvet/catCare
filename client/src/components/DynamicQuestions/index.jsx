@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import style from "./style.module.css";
 import List from "@mui/material/List";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +17,7 @@ export default function DynamicQuestions() {
   const [selectedIndex, setSelectedIndex] = React.useState(null);
   const [selectedTick, setSelectedTick] = React.useState(null);
   const [errorText, setErrorText] = useState(false);
+  const [socket, setSocket] = useState(null)
   const { dark, setDark } = useCredentials();
   const {
     questionNumber,
@@ -26,12 +27,28 @@ export default function DynamicQuestions() {
     setAnimation,
     animation,
     differentAnswersIndex,
+    setDynamicQuestion,
+    dynamicQuestion
   } = useSymptoms();
 
-  const socket = io("http://127.0.0.1:5000");
-  socket.on('connect', () => {
-    console.log('Connected to server');
-  });
+  // Initialize the socket connection when the component mounts
+  useEffect(() => {
+    const newSocket = io("http://127.0.0.1:5000");
+
+    // Add a "connect" event listener when the socket is created
+    newSocket.on("connect", () => {
+      console.log("Connected to server");
+    });
+
+    // Set the socket and clean up the event listener when the component unmounts
+    setSocket(newSocket);
+    return () => {
+      if (newSocket) {
+        newSocket.off("connect");
+        newSocket.disconnect();
+      }
+    };
+  }, []);
 
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
@@ -39,12 +56,31 @@ export default function DynamicQuestions() {
     errorText ? setErrorText(false) : null;
   };
 
+  // Function to handle the question event from the server
+  const handleQuestion = (questionSocket) => {
+    console.log("Received question:", questionSocket);
+    setDynamicQuestion(questionSocket)
+  };
+
+  // Register the event listener for the question event
+  useEffect(() => {
+    if (socket) {
+      socket.on("question", handleQuestion);
+
+      // Clean up the previous event listener when the component unmounts
+      return () => {
+        socket.off("question", handleQuestion);
+      };
+    }
+  }, [socket]);
+
   const nextQuestion = () => {
     if (selectedTick === null) {
       setErrorText(true);
     } else {
       socket.emit("answer", {
-        questionNumber: questionNumber,
+        questionNumber: questionNumber + 1,
+        questionID: dynamicQuestion.id,
         answer: selectedIndex + 1,
       });
       setAnswers([...answers, selectedIndex + 1]);

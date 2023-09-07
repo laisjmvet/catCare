@@ -1,5 +1,5 @@
 import React from "react";
-import SelectAnswer from "../SelectAnswer";
+import DynamicQuestions from "../DynamicQuestions";
 import style from "./style.module.css";
 import DynamicQuestions from "../DynamicQuestions";
 

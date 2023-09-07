@@ -18,6 +18,7 @@ export default function QuestionContainer({ cat }) {
     animation,
     setDifferentAnswersIndex,
     differentAnswersIndex,
+    dynamicQuestion
   } = useSymptoms();
   const { dark, setDark } = useCredentials();
 
@@ -34,7 +35,6 @@ export default function QuestionContainer({ cat }) {
   }
 
   function arrayMap() {
-    console.log(questions);
     let pos = questions
       .map(function(e) {
         return e.id;
@@ -80,7 +80,7 @@ export default function QuestionContainer({ cat }) {
             }}
           >
             {questions.length === 0 ? null : arrayMap()}Q{questionNumber + 1}:{" "}
-            {questions[questionNumber].question}
+            {dynamicQuestion.question}
             {console.log(differentAnswersIndex)}
           </h1>
         )}
