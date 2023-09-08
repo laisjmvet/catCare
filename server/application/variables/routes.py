@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from application.models import Variables, db
 from application.binarySearchKernel.questionsLogic import sendQuestions
+from flask import session
 
 variables = Blueprint("variables", __name__)
 
@@ -40,6 +41,7 @@ def get_variables_questions():
 
     return jsonify(questions), 200
 
-# @variables.route("/variables/qa", methods=["GET"])
-# def get_qa():
-
+@variables.route("/variables/display_qa", methods=["GET"])
+def display_qa():
+    answers = session.get("answers")  # Retrieve answers from the session
+    return f"Answers received: {answers}"

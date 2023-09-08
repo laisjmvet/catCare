@@ -7,10 +7,10 @@ from flask_cors import CORS
 import os  # inbuilt python module
 from dotenv import load_dotenv
 from .db import db
-from .session import session
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate  # db migration
 from application.socketLib import socketLib
+from flask_session import Session
 
 load_dotenv()
 
@@ -34,6 +34,7 @@ login_manager.login_message_category = "info"
 
 migrate = Migrate()
 bcrypt = Bcrypt()
+Session = Session()
 
 def create_app(env=None):
     # initialise the app
@@ -61,8 +62,8 @@ def create_app(env=None):
         app.config["SECRET_KEY"] = os.environ["SECRET_KEY"]
     # initialising the db and connecting to app
     db.init_app(app)
-    session.init_app(app)
-    socketLib.socketio.init_app(app, cors_allowed_origins="*")
+    Session.init_app(app)
+    socketLib.socketio.init_app(app, cors_allowed_origins="*", manage_session=False)
     migrate.init_app(app, db)
     app.app_context().push()
     CORS(app)
