@@ -7,6 +7,7 @@ from flask_cors import CORS
 import os  # inbuilt python module
 from dotenv import load_dotenv
 from .db import db
+from .session import session
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate  # db migration
 from application.socketLib import socketLib
@@ -42,6 +43,7 @@ def create_app(env=None):
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite://"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
     app.config['SECRET_KEY'] = 'secret!'
+    app.config['SESSION_TYPE'] = 'filesystem'
 
     login_manager.init_app(app)
     bcrypt.init_app(app)
@@ -59,6 +61,7 @@ def create_app(env=None):
         app.config["SECRET_KEY"] = os.environ["SECRET_KEY"]
     # initialising the db and connecting to app
     db.init_app(app)
+    session.init_app(app)
     socketLib.socketio.init_app(app, cors_allowed_origins="*")
     migrate.init_app(app, db)
     app.app_context().push()

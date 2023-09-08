@@ -39,3 +39,7 @@ def get_variables_questions():
     questions = sendQuestions()
 
     return jsonify(questions), 200
+
+# @variables.route("/variables/qa", methods=["GET"])
+# def get_qa():
+
