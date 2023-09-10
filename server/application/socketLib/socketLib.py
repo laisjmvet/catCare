@@ -15,6 +15,7 @@ socketio = SocketIO()
 def handle_connect():
     # before_answer()  
     session['data'] = []
+    session['questionsIds'] = []
     session.modified = True
     send_question()
     print("question sent!!!!!!!", session['data'])
@@ -27,6 +28,7 @@ def handle_connect():
 @socketio.on("disconnect")
 def handle_disconnect():   
     session.pop('data', None)
+    session.pop('questionsIds', None)
     print("User disconnected")
 
 def send_question():    
@@ -38,7 +40,8 @@ def handle_answer(data):
     # answer = data.get("answer")
     
     session['data'].append(data)
+    session['questionsIds'].append(data['questionID'])
     session.modified = True
-    print(session['data'])
+    print(session['data'], session['questionsIds'])
     print(">>>>>>>>>>>>Received answer:", data)
     send_question()
