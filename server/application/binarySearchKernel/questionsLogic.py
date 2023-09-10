@@ -21,6 +21,12 @@ def sendQuestions():
     randomQuestions = BayesLibObj.getRandomQuestions(falseVariableQuestions)
     return randomQuestions
 
+def sendQuestions2():
+    falseVariableQuestions = getAllFalseDefaultVariablesIds()
+    randomQuestions = BayesLibObj.getDynamicQuestion(falseVariableQuestions)
+    return randomQuestions
+
+print(sendQuestions2(), "<<<<<<<<<<<<")
 
 def findDiagnosis(
     pet_id=1,

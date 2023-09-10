@@ -57,6 +57,19 @@ class BayesLib:
                 idx.append(question_Idx)
                 randomQuestions.append(falseVariableQuestions[question_Idx])
         return randomQuestions
+    
+    def getDynamicQuestion(self, falseVariableQuestions, userResponse = [{'questionNumber': 3, 'questionID': 10, 'answer': 5}, {'questionNumber': 4, 'questionID': 1, 'answer': 4}, {'questionNumber': 5, 'questionID': 28, 'answer': 4}, {'questionNumber': 6, 'questionID': 21, 'answer': 4}], questionsIDs = [10, 1, 28, 21, 28]
+):
+        # Start with a random algorithm
+        dynamicQuestion = []
+        questionsIDs = [*questionsIDs]
+        if userResponse[-1]['questionNumber'] < self.maxIter:
+            question_ID = rd.randint(0, len(falseVariableQuestions) - 1)            
+            if question_ID not in questionsIDs:
+                questionsIDs.append(question_ID)
+                dynamicQuestion.append(falseVariableQuestions[question_ID])
+        return dynamicQuestion  
+    
 
     def Solve(self):
         # Calculating Probabilities based on Bayes theorem
