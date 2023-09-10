@@ -2,7 +2,7 @@
 function to call with diff setting (dev or testing environment)
 run different version of the app (multiple instances with different config)
 setup app factory """
-from flask import Flask
+from flask import Flask, session
 from flask_cors import CORS
 import os  # inbuilt python module
 from dotenv import load_dotenv
@@ -34,7 +34,7 @@ login_manager.login_message_category = "info"
 
 migrate = Migrate()
 bcrypt = Bcrypt()
-Session = Session()
+sessionConfig = Session()
 
 def create_app(env=None):
     # initialise the app
@@ -45,6 +45,9 @@ def create_app(env=None):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
     app.config['SECRET_KEY'] = 'secret!'
     app.config['SESSION_TYPE'] = 'filesystem'
+    app.config['SESSION_PERMANENT'] = False    # Session will expire when the browser is closed
+    app.config['SESSION_USE_SIGNER'] = True  # Enable cookie signing
+    app.config['SESSION_KEY_PREFIX'] = 'your_prefix'  # Set a unique prefix
 
     login_manager.init_app(app)
     bcrypt.init_app(app)
@@ -62,11 +65,11 @@ def create_app(env=None):
         app.config["SECRET_KEY"] = os.environ["SECRET_KEY"]
     # initialising the db and connecting to app
     db.init_app(app)
-    Session.init_app(app)
-    socketLib.socketio.init_app(app, cors_allowed_origins="*", manage_session=False)
+    sessionConfig.init_app(app)
+    socketLib.socketio.init_app(app, cors_allowed_origins="*", manage_session=True)
     migrate.init_app(app, db)
     app.app_context().push()
-    CORS(app)
+    CORS(app, support_credentials=True)
 
     # BLUEPRINTS
     from application.homepage.routes import homepage

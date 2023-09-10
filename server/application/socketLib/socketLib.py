@@ -13,26 +13,32 @@ socketio = SocketIO()
 
 @socketio.on("connect")
 def handle_connect():
-    before_answer()  
-    session.modified = True 
+    # before_answer()  
+    session['data'] = []
+    session.modified = True
     send_question()
-    print("question sent!!!!!!!")
+    print("question sent!!!!!!!", session['data'])
+
+# def before_answer():
+#     if "data" not in session:
+#         session['data'] = []  # Initialize the session variable if it doesn't exist
+        # session.modified = True
 
 @socketio.on("disconnect")
 def handle_disconnect():   
+    session.pop('data', None)
     print("User disconnected")
 
 def send_question():    
-    question = questionsLogic.sendQuestions()
+    question = questionsLogic.sendQuestions()    
     emit("question", question[0])
-
-def before_answer():
-    if "answers" not in session:
-        session["answers"] = []  # Initialize the session variable if it doesn't exist
-        session.modified = True
-
 
 @socketio.on("answer")
 def handle_answer(data):
+    # answer = data.get("answer")
+    
+    session['data'].append(data)
+    session.modified = True
+    print(session['data'])
     print(">>>>>>>>>>>>Received answer:", data)
     send_question()

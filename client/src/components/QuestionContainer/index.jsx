@@ -24,8 +24,8 @@ export default function QuestionContainer({ cat }) {
 
   async function getQuestions() {
     const response = await fetch(
-      "http://127.0.0.1:5000/variables_questions"
-    );
+      "http://127.0.0.1:5000/variables_questions");
+    
     if (response.status == 200) {
       const data = await response.json();
       setQuestions(data);
