@@ -5,7 +5,7 @@ from pathlib import Path
 full_path = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(str(Path(full_path).parents[1]))
 
-from application.binarySearchKernel import logicUtilityFunctions, BayesLib
+from application.binarySearchKernel import BayesLib
 from logicUtilityFunctions import *
 
 allVariables = getAllDiseaseVariablesIds()
@@ -25,8 +25,6 @@ def sendQuestions2():
     falseVariableQuestions = getAllFalseDefaultVariablesIds()
     randomQuestions = BayesLibObj.getDynamicQuestion(falseVariableQuestions)
     return randomQuestions
-
-print(sendQuestions2(), "<<<<<<<<<<<<")
 
 def findDiagnosis(
     pet_id=1,
