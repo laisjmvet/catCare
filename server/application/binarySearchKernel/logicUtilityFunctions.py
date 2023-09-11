@@ -8,7 +8,7 @@ sys.path.append(str(Path(full_path).parents[1]))
 # Import necessary modules
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from application import *
+from application.db import DATABASE_URL
 from datetime import *
 from application.models import Variables, Diseases, UsersAnswersCount, Pets
 from BayesLib import CalculateAnswer

@@ -3,11 +3,9 @@ import sys
 from pathlib import Path
 
 full_path = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(str(Path(full_path).parents[0]))
 sys.path.append(str(Path(full_path).parents[1]))
 
-from application import *
-from binarySearchKernel import *
+from application.binarySearchKernel import logicUtilityFunctions, BayesLib
 from logicUtilityFunctions import *
 
 allVariables = getAllDiseaseVariablesIds()

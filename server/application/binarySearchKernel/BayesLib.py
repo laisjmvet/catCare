@@ -53,7 +53,6 @@ class BayesLib:
         idx = []
         while len(randomQuestions) < self.maxIter:
             question_Idx = rd.randint(0, len(falseVariableQuestions) - 1)
-            print(question_Idx)
             if question_Idx not in idx:
                 idx.append(question_Idx)
                 randomQuestions.append(falseVariableQuestions[question_Idx])

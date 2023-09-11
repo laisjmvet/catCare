@@ -1,6 +1,6 @@
 # Here we will build all out tables (DB).
 from sqlalchemy import ARRAY
-from application import db
+from .db import db
 from flask_login import UserMixin
 
 

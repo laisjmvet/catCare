@@ -65,11 +65,12 @@ export default function LoginPage() {
   const errorMessage = (error) => {
     console.log(error);
   };
-
+  
   const loginRequest = async () => {
     const options = {
       method: "POST",
       mode: "cors",
+      // credentials: "same-origin", // Include cookies in the request
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",

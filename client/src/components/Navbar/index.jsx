@@ -125,8 +125,21 @@ export default function Navbar() {
     setOpen(false);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async() => {
     localStorage.clear();
+    const options = {
+      method: "GET",
+      mode: "cors",      
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      }
+    }
+
+    const response = await fetch(
+      "http://127.0.0.1:5000/logout", options
+      // "https://catcareserver.onrender.com/login",      
+    );
     navigate("/login");
   };
 

@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, session
 from application.models import Variables, db
 from application.binarySearchKernel.questionsLogic import sendQuestions
 
@@ -35,7 +35,24 @@ def get_variable_by_id(id):
 
 
 @variables.route("/variables_questions", methods=["GET"])
-def get_variables_questions():
-    questions = sendQuestions()
-
+def get_variables_questions():    
+    questions = sendQuestions()    
     return jsonify(questions), 200
+
+# @variables.route("/variables/display_qa", methods=["GET"])
+# def display_qa():
+#     answers = session['data']
+#     if answers is not None:
+#         return f'Answers received: {answers}'
+#     else:
+#         return 'No data in the session', 404 
+
+# @variables.route('/variables/set_session')
+# def set_session():
+#     session['username'] = 'JohnDoe'
+#     return 'Session variable set'
+
+# @variables.route('/variables/get_session')
+# def get_session():
+#     username = session.get('username', 'Guest')
+#     return f'Hello, {username}'
