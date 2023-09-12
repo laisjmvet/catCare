@@ -8,17 +8,15 @@ sys.path.append(str(Path(full_path).parents[2]))
 # Import necessary modules
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-#from application.db import DATABASE_URL
+from application.db import DATABASE_URL
 from datetime import *
 from application.models import Variables, Diseases, UsersAnswersCount, Pets
 from BayesLib import CalculateAnswer
 import numpy as np
 
-# Create an engine and bind it to a session
-
 class DbRequests:
     def __init__(self):
-        self.dbURL = "postgresql://qbmdycoi:dvg0nKw0ZAZ5cvAZH7Z205BkJPhYpe4v@trumpet.db.elephantsql.com/qbmdycoi"
+        self.dbURL = DATABASE_URL
         self.engine = create_engine(self.dbURL)
         self.Session = sessionmaker(bind=self.engine)
         self.session = self.Session()        
