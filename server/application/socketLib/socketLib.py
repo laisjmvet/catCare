@@ -5,11 +5,12 @@ full_path = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(str(Path(full_path).parents[1]))
 
 from flask_socketio import SocketIO, emit
-from application.binarySearchKernel import questionsLogic
+from application.binarySearchKernel.qaLogic import QALogic
 from flask import session
 # from flask import request
 
 socketio = SocketIO()
+qaLogic = QALogic(15)
 
 @socketio.on("connect")
 def handle_connect():
@@ -17,7 +18,7 @@ def handle_connect():
     session['data'] = []
     session['questionsIDs'] = []
     session.modified = True
-    send_question()
+    send_question([], [])
     print("question sent!!!!!!!", session['data'], session['questionsIDs'])
 
 # def before_answer():
@@ -31,17 +32,15 @@ def handle_disconnect():
     session.pop('questionsIDs', None)
     print("User disconnected")
 
-def send_question():    
-    question = questionsLogic.sendQuestions()    
+def send_question(userResponse, questionsIDs):    
+    question = qaLogic.getDynamicQuestion(userResponse, questionsIDs) 
+    print("question sent >>>>>", question)
     emit("question", question[0])
 
 @socketio.on("answer")
 def handle_answer(data):
-    # answer = data.get("answer")
-    
     session['data'].append(data)
     session['questionsIDs'].append(data['questionID'])
     session.modified = True
-    print(session['data'], session['questionsIDs'])
-    print(">>>>>>>>>>>>Received answer:", data)
-    send_question()
+    print("Answers: >>>>>>>>> ", session['data'], session['questionsIDs'])
+    send_question(session['data'], session['questionsIDs'])

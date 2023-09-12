@@ -41,16 +41,31 @@ class QALogic():
                 self.diseasesVariables_so_far.append(variableID)
                 self.answers_so_far.append(answer)  
 
-    def getDynamicQuestion(self, userResponse = [{'questionNumber': 3, 'questionID': 10, 'answer': 5}, {'questionNumber': 4, 'questionID': 1, 'answer': 4}, {'questionNumber': 5, 'questionID': 28, 'answer': 4}, {'questionNumber': 6, 'questionID': 21, 'answer': 4}], questionsIDs = [10, 1, 28, 21, 28]
-    ):
-            # Start with a random algorithm
-            dynamicQuestion = []
-            questionsIDs = [*questionsIDs]
-            if userResponse[-1]['questionNumber'] < self.maxIter:
-                question_ID = rd.randint(0, len(self.falseVariableQuestions) - 1)            
-                if question_ID not in questionsIDs:
-                    questionsIDs.append(question_ID)
-                    dynamicQuestion.append(self.falseVariableQuestions[question_ID])
+    def getDynamicQuestion(self, userResponse, questionsIDs):
+
+        # def findQuestionID(id):
+        #     for question in self.falseVariableQuestions:
+        #         if question['id'] == id:
+        #             dynamicQuestion.append(question)
+            
+        dynamicQuestion = []
+        questionsIDs = [*questionsIDs]
+        print(questionsIDs, "*************")
+        question_ID = rd.randint(0, len(self.falseVariableQuestions) - 1)
+        
+        if userResponse == []:                
+            dynamicQuestion.append(self.falseVariableQuestions[question_ID])
+        elif userResponse[-1]['questionNumber'] < self.maxIter:
+            if question_ID not in questionsIDs:
+                dynamicQuestion.append(self.falseVariableQuestions[question_ID])
+            else:
+                while question_ID in questionsIDs: 
+                    #question_ID = rd.randint(0, len(self.falseVariableQuestions) - 1)
+                    print(question_ID, "second")
+                    if question_ID not in questionsIDs:
+                        dynamicQuestion.append(self.falseVariableQuestions[question_ID])
+                        break
+            print("questionID", question_ID)
             return dynamicQuestion
     
     def answerDefaultAnamnese(self, obj):
@@ -122,10 +137,10 @@ class QALogic():
 
         return answersConverted
 
-    def sendQuestions(self):
-        falseVariableQuestions = self.dbRequests.getAllFalseDefaultVariablesIds()
-        dynamicQuestion = self.bayesObj.getDynamicQuestion(falseVariableQuestions)
-        return dynamicQuestion
+    # def sendQuestion(self, userResponse, questionsIDs):
+    #     falseVariableQuestions = self.dbRequests.getAllFalseDefaultVariablesIds()
+    #     dynamicQuestion = self.getDynamicQuestion(userResponse, questionsIDs)
+    #     return dynamicQuestion
 
     def findDiagnosis(
         self,
@@ -141,5 +156,3 @@ class QALogic():
         self.setQuestionAnswer(questionsAnswered, answersDynamicQuestions)
         probabilities = self.bayesObj.Solve(self.diseasesVariables_so_far, self.answers_so_far)
         return probabilities
-
-print(QALogic(15).findDiagnosis())
