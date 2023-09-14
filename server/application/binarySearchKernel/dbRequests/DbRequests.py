@@ -6,9 +6,6 @@ full_path = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(str(Path(full_path).parents[2]))
 
 # Import necessary modules
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from application.db import DATABASE_URL
 from datetime import *
 from application.models import Variables, Diseases, UsersAnswersCount, Pets
 from BayesLib import CalculateAnswer
@@ -22,49 +19,47 @@ class DbRequests:
         # self.Session = sessionmaker(bind=self.engine)
         # self.session = self.Session()        
 
-    # # GETTING ALL DISEASE VARIABLES' IDS
-    # def getAllDiseaseVariablesIds(self):
-    #     diseaseVariablesQuery = self.session.query(Variables).all()
-    #     allDiseaseVariablesIds = []
+    # GETTING ALL DISEASE VARIABLES' IDS
+    def getAllDiseaseVariablesIds(self):
+        diseaseVariablesQuery = Variables.query.all()
+        allDiseaseVariablesIds = []
 
-    #     for diseaseVariable in diseaseVariablesQuery:
-    #         diseaseVariable_dict = diseaseVariable.as_dict()
-    #         allDiseaseVariablesIds.append(diseaseVariable_dict["id"])
-    #     self.session.close()
-    #     return allDiseaseVariablesIds
+        for diseaseVariable in diseaseVariablesQuery:
+            diseaseVariable_dict = diseaseVariable.as_dict()
+            allDiseaseVariablesIds.append(diseaseVariable_dict["id"])
+        
+        return allDiseaseVariablesIds
 
-    # # GETTING ALL DISEASES' IDS
-    # def getAllDiseasesIds(self):
-    #     diseasesQuery = self.session.query(Diseases).all()
-    #     allDiseasesIds = []
+    # GETTING ALL DISEASES' IDS
+    def getAllDiseasesIds(self):
+        diseasesQuery = Diseases.query.all()
+        allDiseasesIds = []
 
-    #     for disease in diseasesQuery:
-    #         disease_dict = disease.as_dict()
-    #         allDiseasesIds.append(disease_dict["id"])
-    #     self.session.close()
-    #     return allDiseasesIds
+        for disease in diseasesQuery:
+            disease_dict = disease.as_dict()
+            allDiseasesIds.append(disease_dict["id"])
+        
+        return allDiseasesIds
 
-    # # GETTING ALL VARIABLES' IDS THAT TYPE IS TRUE
-    # def getAllTrueDefaultVariablesIds(self):
-    #     true_default_variables = (
-            
-    #         self.session.query(Variables).filter_by(defaultQuestion=True).all()
-    #     )
-    #     all_true_default_variables = []
+    # GETTING ALL VARIABLES' IDS THAT TYPE IS TRUE
+    def getAllTrueDefaultVariablesIds(self):
+        true_default_variables = (
+            Variables.query.filter_by(defaultQuestion=True).all()
+        )
+        all_true_default_variables = []
 
-    #     for var in true_default_variables:
-    #         var_dict = var.as_dict()
-    #         all_true_default_variables.append(var_dict["id"])
-    #     self.session.close()
-    #     return all_true_default_variables
+        for var in true_default_variables:
+            var_dict = var.as_dict()
+            all_true_default_variables.append(var_dict["id"])
+
+        return all_true_default_variables
 
 
     def getAllFalseDefaultVariablesIds(self):
         false_default_variables = (
             Variables.query.filter_by(defaultQuestion=False).all()
-            # self.session.query(Variables).filter_by(defaultQuestion=False).all()
         )
-        # self.session.close()
+        # 
         all_false_default_variables = []
 
         for var in false_default_variables:
@@ -72,37 +67,32 @@ class DbRequests:
             all_false_default_variables.append(
                 {"id": var_dict["id"], "question": var_dict["question"]}
             )
-        # self.session.close()
+
         return all_false_default_variables
 
-    # def getAllDiseaseRules(self):
-    #     diseaseRulesQuery = self.session.query(UsersAnswersCount).all()
-    #     lenDiseaseVariables = len(self.session.query(Variables).all())
-    #     lenDiseases = len(self.session.query(Diseases).all())
-    #     rulesMatrix = np.zeros((lenDiseases + 1, lenDiseaseVariables + 1))
+    def getAllDiseaseRules(self):
+        diseaseRulesQuery =  UsersAnswersCount.query.all()
+        lenDiseaseVariables = len(Variables.query.all())
+        lenDiseases = len(Diseases.query.all())
+        rulesMatrix = np.zeros((lenDiseases + 1, lenDiseaseVariables + 1))
 
-    #     for rule in diseaseRulesQuery:
-    #         rule_dict = rule.as_dict_for_probability_function()
-    #         rulesMatrix[rule_dict["disease_id"]][
-    #             rule_dict["diseasesVariables_id"]
-    #         ] = CalculateAnswer(rule_dict["rules"])
-    #     self.session.close()
-    #     return rulesMatrix
+        for rule in diseaseRulesQuery:
+            rule_dict = rule.as_dict_for_probability_function()
+            rulesMatrix[rule_dict["disease_id"]][
+                rule_dict["diseasesVariables_id"]
+            ] = CalculateAnswer(rule_dict["rules"])
+        
+        return rulesMatrix
 
-    # # GET THE PET DETAILS BY ID
-    # def getPetDetailsbyId(self, petID):
-    #     pet = self.session.query(Pets).filter_by(id=petID).all()
-    #     selected_pet = None
+    # GET THE PET DETAILS BY ID
+    def getPetDetailsbyId(self, petID):
+        pet = Pets.query.filter_by(id=petID).all()
+        selected_pet = None
 
-    #     for p in pet:
-    #         var_dict = p.as_dict()
-    #         selected_pet = var_dict
-    #     self.session.close()
-    #     return selected_pet
+        for p in pet:
+            var_dict = p.as_dict()
+            selected_pet = var_dict
+        
+        return selected_pet
     
-    def closeSession(self):
-        try:
-            self.session.close()
-    
-        except Exception as e:
-            print(e)
+   
