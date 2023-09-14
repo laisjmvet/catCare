@@ -5,7 +5,6 @@ full_path = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(str(Path(full_path).parents[1]))
 
 from flask_socketio import SocketIO, emit
-from application.binarySearchKernel import questionsLogic
 from application.binarySearchKernel.qaLogic import QALogic
 from flask import session
 # from flask import request

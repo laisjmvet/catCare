@@ -3,7 +3,6 @@ from sqlalchemy import ARRAY
 from .db import db
 from flask_login import UserMixin
 
-
 class Users(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(50), nullable=False)
@@ -21,7 +20,6 @@ class Users(UserMixin, db.Model):
     def __repr__(self):
         return "<Users %r>" % self.username
 
-
 class Appointments(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.String(100), nullable=False)
@@ -35,7 +33,6 @@ class Appointments(db.Model):
         self.user_id = user_id
         self.time = time
         self.meeting_id = meeting_id
-
 
 class Pets(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True)
@@ -92,7 +89,6 @@ class Pets(db.Model):
     def __repr__(self):
         return f"<Pets(id={self.id}, name={self.name} user_id={self.user_id}, dob={self.dob}, neutered={self.neutered}, sex={self.sex}, diet={self.diet}, outdoor={self.outdoor}, contactWithOtherPets = {self.contactWithOtherPets})>"
 
-
 class Diary(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True, index=True)
     pet_id = db.Column(db.Integer, db.ForeignKey("pets.id"), nullable=False)
@@ -124,7 +120,6 @@ class Diary(db.Model):
             "possiblesDiagnosis": self.possiblesDiagnosis,
         }
 
-
 class Diseases(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -146,7 +141,6 @@ class Diseases(db.Model):
 
     def __repr__(self):
         return f"<Diseases(id={self.id}, specialty={self.specialty}, name={self.name}, description={self.description})>"
-
 
 class Variables(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -172,7 +166,6 @@ class Variables(db.Model):
 
     def __repr__(self):
         return f"<Variables(id={self.id}, specialty={self.specialty}, feature={self.feature}, question={self.question}, defaultQuestion={self.defaultQuestion})>"
-
 
 class UsersAnswersCount(db.Model):
     id = db.Column(db.Integer, primary_key=True)

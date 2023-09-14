@@ -8,7 +8,7 @@ print(str(Path(full_path).parents[1]))
 
 from flask import Blueprint, request, jsonify
 from application.models import Diary, Diseases, db
-from application.binarySearchKernel.questionsLogic import findDiagnosis
+from application.binarySearchKernel.qaLogic import QALogic
 from datetime import *
 
 diary = Blueprint("diary", __name__)
@@ -22,7 +22,7 @@ def create_diary():
     pet_id = data["pet_id"]
     questions = data["questionsArray"]
     answers = data["answersArray"]
-    result = findDiagnosis(pet_id, questions, answers)
+    result = QALogic.findDiagnosis(pet_id, questions, answers)
 
     listDiseases = []
     for diagnosis in result:

@@ -8,7 +8,7 @@ sys.path.append(str(Path(full_path).parents[2]))
 # Import necessary modules
 from datetime import *
 from application.models import Variables, Diseases, UsersAnswersCount, Pets
-from BayesLib import CalculateAnswer
+from application.binarySearchKernel.numericLogic.Bayes import CalculateAnswer
 import numpy as np
 
 class DbRequests:

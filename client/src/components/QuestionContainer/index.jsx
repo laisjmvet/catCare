@@ -22,17 +22,17 @@ export default function QuestionContainer({ cat }) {
   } = useSymptoms();
   const { dark, setDark } = useCredentials();
 
-  async function getQuestions() {
-    const response = await fetch(
-      "http://127.0.0.1:5000/variables_questions");
+  // async function getQuestions() {
+  //   const response = await fetch(
+  //     "http://127.0.0.1:5000/variables_questions");
     
-    if (response.status == 200) {
-      const data = await response.json();
-      setQuestions(data);
-    } else {
-      console.log("Question fetch failed");
-    }
-  }
+  //   if (response.status == 200) {
+  //     const data = await response.json();
+  //     setQuestions(data);
+  //   } else {
+  //     console.log("Question fetch failed");
+  //   }
+  // }
 
   function arrayMap() {
     let pos = questions
@@ -42,9 +42,9 @@ export default function QuestionContainer({ cat }) {
       .indexOf(35);
     setDifferentAnswersIndex(pos);
   }
-  useEffect(() => {
-    getQuestions();
-  }, []);
+  // useEffect(() => {
+  //   getQuestions();
+  // }, []);
 
   const toolTip = `Gender: ${cat.sex}, Breed: ${cat.breed}, DOB: ${cat.dob}, Outdoor: ${cat.outdoor}, Neutered: ${cat.neutered}, Diet: ${cat.diet}, Contact with other pets: ${cat.contactWithPets}`;
 
@@ -64,7 +64,7 @@ export default function QuestionContainer({ cat }) {
         </Tooltip>
       </div>
       <div className={style["question-container"]}>
-        {questions.length === 0 ? null : questionNumber == 15 ? (
+        {dynamicQuestion.length === 0 ? null : questionNumber == 15 ? (
           <Results cat={cat} />
         ) : (
           <h1
@@ -79,9 +79,9 @@ export default function QuestionContainer({ cat }) {
               color: dark ? "whitesmoke" : "#121212",
             }}
           >
-            {questions.length === 0 ? null : arrayMap()}Q{questionNumber + 1}:{" "}
+            {/* {questions.length === 0 ? null : arrayMap()}Q{questionNumber + 1}:{" "} */}
             {dynamicQuestion.question}
-            {console.log(differentAnswersIndex)}
+            {/* {console.log(differentAnswersIndex)} */}
           </h1>
         )}
       </div>
