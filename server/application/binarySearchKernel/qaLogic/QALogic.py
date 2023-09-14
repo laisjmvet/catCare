@@ -67,7 +67,7 @@ class QALogic():
             if question_ID not in questionsIDs:
                 findQuestionID(question_ID, falseVariablesQuestions)                
             else:
-                #while loop to not get repeated ids
+                #while loop to not get repeated ids. NOT WORKING NEED TO FIX!!!!!!!!!
                 id_already_used = True
                 while id_already_used: 
                     question_ID = rd.randint(0, len(falseVariablesQuestions))
@@ -144,12 +144,7 @@ class QALogic():
             else:
                 raise TypeError("Numbers must be from 1 to 5")
 
-        return answersConverted
-
-    # def sendQuestion(self, userResponse, questionsIDs):
-    #     falseVariableQuestions = DbRequests().getAllFalseDefaultVariablesIds()
-    #     dynamicQuestion = self.getDynamicQuestion(userResponse, questionsIDs)
-    #     return dynamicQuestion
+        return answersConverted    
 
     def findDiagnosis(
         self,

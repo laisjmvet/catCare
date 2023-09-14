@@ -79,7 +79,7 @@ export default function QuestionContainer({ cat }) {
               color: dark ? "whitesmoke" : "#121212",
             }}
           >
-            {/* {questions.length === 0 ? null : arrayMap()}Q{questionNumber + 1}:{" "} */}
+            {dynamicQuestion.length === 0 ? null : arrayMap()}Q{questionNumber + 1}:{" "}
             {dynamicQuestion.question}
             {/* {console.log(differentAnswersIndex)} */}
           </h1>
