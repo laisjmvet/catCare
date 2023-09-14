@@ -13,11 +13,7 @@ import numpy as np
 
 class DbRequests:
     def __init__(self):
-        pass
-        # self.dbURL = DATABASE_URL
-        # self.engine = create_engine(self.dbURL)
-        # self.Session = sessionmaker(bind=self.engine)
-        # self.session = self.Session()        
+        pass 
 
     # GETTING ALL DISEASE VARIABLES' IDS
     def getAllDiseaseVariablesIds(self):
@@ -53,7 +49,6 @@ class DbRequests:
             all_true_default_variables.append(var_dict["id"])
 
         return all_true_default_variables
-
 
     def getAllFalseDefaultVariablesIds(self):
         false_default_variables = (

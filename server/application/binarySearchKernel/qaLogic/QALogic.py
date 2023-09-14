@@ -14,13 +14,13 @@ class QALogic():
     def __init__(self, maxIter):
         self.dbRequests = DbRequests()
         self.maxIter = maxIter
+        self.diseasesVariables_so_far = []
+        self.answers_so_far = []
         # self.allVariables = self.dbRequests.getAllDiseaseVariablesIds()
         # self.allDiseases = self.dbRequests.getAllDiseasesIds()
         # self.allRules = self.dbRequests.getAllDiseaseRules()
         #self.falseVariableQuestions = self.dbRequests.getAllFalseDefaultVariablesIds()
         # self.bayesObj = Bayes(self.allVariables, self.allDiseases, self.allRules)
-        self.diseasesVariables_so_far = []
-        self.answers_so_far = []
 
     def as_dict(self):
         return {
@@ -46,36 +46,35 @@ class QALogic():
         falseVariablesQuestions = self.dbRequests.getAllFalseDefaultVariablesIds()
         dynamicQuestion = []
         questionsIDs = [*questionsIDs]
-        question_ID = rd.randint(0, len(falseVariablesQuestions))
-        
-        def findQuestionID(id, falseVariablesQuestions):
-            #Sometimes the random id might not be in the falseVariablesQuestions, so i am creating a while loop if that id is not found
+
+        #Sometimes the random number selected doesnt have an id, so i am creating a while loop to find a one that matches
+        def findQuestionByID(falseVariablesQuestions):
             id_not_found = True
-            nonlocal question_ID
+            question_ID = rd.randint(1, len(falseVariablesQuestions))
             while id_not_found:                
                 for question in falseVariablesQuestions:
-                    if question['id'] == id:                    
-                        dynamicQuestion.append(question)
-                        id_not_found = False         
-                        return dynamicQuestion
+                    if question['id'] == question_ID: 
+                        id_not_found = False
+                        return [question_ID, question]
                     else:
-                        question_ID = rd.randint(0, len(falseVariablesQuestions))
+                        question_ID = rd.randint(1, len(falseVariablesQuestions))
 
-        if userResponse == []:             
-            findQuestionID(question_ID, falseVariablesQuestions)
-        elif userResponse[-1]['questionNumber'] < self.maxIter:
-            if question_ID not in questionsIDs:
-                findQuestionID(question_ID, falseVariablesQuestions)                
-            else:
-                #while loop to not get repeated ids. NOT WORKING NEED TO FIX!!!!!!!!!
+        filteredQuestion = findQuestionByID(falseVariablesQuestions)
+        if userResponse == [] or userResponse[-1]['questionNumber'] < self.maxIter:            
+            if filteredQuestion[0] not in questionsIDs: 
+                dynamicQuestion.append(filteredQuestion[1])
+                return dynamicQuestion             
+            else:                
+                #while loop to not get repeated ids. 
                 id_already_used = True
                 while id_already_used: 
-                    question_ID = rd.randint(0, len(falseVariablesQuestions))
-                    if question_ID not in questionsIDs:
-                        dynamicQuestion.append(falseVariablesQuestions[question_ID])
+                    newFilteredQuestion = findQuestionByID(falseVariablesQuestions)
+                    if newFilteredQuestion[0] not in questionsIDs:
+                        dynamicQuestion.append(newFilteredQuestion[1])
                         id_already_used = False
-
-        return dynamicQuestion            
+                        return dynamicQuestion
+        else:
+            return 'no more questions'     
     
     def answerDefaultAnamnese(self, obj):
         current_date = datetime.now().date()

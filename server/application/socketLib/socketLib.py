@@ -7,10 +7,8 @@ sys.path.append(str(Path(full_path).parents[1]))
 from flask_socketio import SocketIO, emit
 from application.binarySearchKernel.qaLogic import QALogic
 from flask import session
-# from flask import request
 
 socketio = SocketIO()
-
 
 @socketio.on("connect")
 def handle_connect():
@@ -19,12 +17,7 @@ def handle_connect():
     session['questionsIDs'] = []
     session.modified = True
     send_question([], [])
-    print("question sent!!!!!!!", session['data'], session['questionsIDs'])
-
-# def before_answer():
-#     if "data" not in session:
-#         session['data'] = []  # Initialize the session variable if it doesn't exist
-        # session.modified = True
+    print("question sent!!!!!!!")
 
 @socketio.on("disconnect")
 def handle_disconnect():   
@@ -44,5 +37,4 @@ def handle_answer(data):
     session['questionsIDs'].append(data['questionID'])
     session.modified = True
     print("Answers: >>>>>>>>> ", session['data'], session['questionsIDs'])
-    print("next is to send a question again <<<<<<<<<<>>>>>>>>>>>")
     send_question(session['data'], session['questionsIDs'])

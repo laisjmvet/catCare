@@ -10,41 +10,16 @@ import classNames from "classnames";
 export default function QuestionContainer({ cat }) {
   const {
     questionNumber,
-    setQuestionNumberquestions,
-    questions,
-    setQuestions,
-    answers,
-    setAnswers,
     animation,
     setDifferentAnswersIndex,
-    differentAnswersIndex,
     dynamicQuestion
   } = useSymptoms();
   const { dark, setDark } = useCredentials();
 
-  // async function getQuestions() {
-  //   const response = await fetch(
-  //     "http://127.0.0.1:5000/variables_questions");
-    
-  //   if (response.status == 200) {
-  //     const data = await response.json();
-  //     setQuestions(data);
-  //   } else {
-  //     console.log("Question fetch failed");
-  //   }
-  // }
-
-  function arrayMap() {
-    let pos = questions
-      .map(function(e) {
-        return e.id;
-      })
-      .indexOf(35);
+  function handleQuestionNumber() {
+    let pos = 1
     setDifferentAnswersIndex(pos);
   }
-  // useEffect(() => {
-  //   getQuestions();
-  // }, []);
 
   const toolTip = `Gender: ${cat.sex}, Breed: ${cat.breed}, DOB: ${cat.dob}, Outdoor: ${cat.outdoor}, Neutered: ${cat.neutered}, Diet: ${cat.diet}, Contact with other pets: ${cat.contactWithPets}`;
 
@@ -79,7 +54,7 @@ export default function QuestionContainer({ cat }) {
               color: dark ? "whitesmoke" : "#121212",
             }}
           >
-            {dynamicQuestion.length === 0 ? null : arrayMap()}Q{questionNumber + 1}:{" "}
+            {dynamicQuestion.length === 0 ? null : handleQuestionNumber()}Q{questionNumber + 1}:{" "}
             {dynamicQuestion.question}
             {/* {console.log(differentAnswersIndex)} */}
           </h1>
