@@ -14,11 +14,11 @@ class QALogic():
     def __init__(self, maxIter):
         self.dbRequests = DbRequests()
         self.maxIter = maxIter
-        self.allVariables = self.dbRequests.getAllDiseaseVariablesIds()
-        self.allDiseases = self.dbRequests.getAllDiseasesIds()
-        self.allRules = self.dbRequests.getAllDiseaseRules()
-        self.falseVariableQuestions = self.dbRequests.getAllFalseDefaultVariablesIds()
-        self.bayesObj = Bayes(self.allVariables, self.allDiseases, self.allRules)
+        # self.allVariables = self.dbRequests.getAllDiseaseVariablesIds()
+        # self.allDiseases = self.dbRequests.getAllDiseasesIds()
+        # self.allRules = self.dbRequests.getAllDiseaseRules()
+        #self.falseVariableQuestions = self.dbRequests.getAllFalseDefaultVariablesIds()
+        # self.bayesObj = Bayes(self.allVariables, self.allDiseases, self.allRules)
         self.diseasesVariables_so_far = []
         self.answers_so_far = []
 
@@ -43,30 +43,43 @@ class QALogic():
 
     def getDynamicQuestion(self, userResponse, questionsIDs):
 
-        # def findQuestionID(id):
-        #     for question in self.falseVariableQuestions:
-        #         if question['id'] == id:
-        #             dynamicQuestion.append(question)
-            
+        print("I got inside getDynamic Question")
+        falseVariablesQuestions = self.dbRequests.getAllFalseDefaultVariablesIds() 
+        print("After getting all falseVariables")   
+        # self.dbRequests.closeSession()
         dynamicQuestion = []
         questionsIDs = [*questionsIDs]
-        print(questionsIDs, "*************")
-        question_ID = rd.randint(0, len(self.falseVariableQuestions) - 1)
+        question_ID = rd.randint(0, len(falseVariablesQuestions) - 1)
+        print(questionsIDs, "*************", question_ID)
         
-        if userResponse == []:                
-            dynamicQuestion.append(self.falseVariableQuestions[question_ID])
+        def findQuestionID(id, falseVariablesQuestions):
+            #Sometimes the random id might not be in the falseVariablesQuestions, so i am creating a while loop if that id is not found
+            id_not_found = True
+            nonlocal question_ID
+            while id_not_found:                
+                for question in falseVariablesQuestions:
+                    if question['id'] == id:                    
+                        dynamicQuestion.append(question)
+                        id_not_found = False         
+                        return dynamicQuestion
+                    else:
+                        question_ID = rd.randint(0, len(falseVariablesQuestions) - 1)
+
+        if userResponse == []:             
+            findQuestionID(question_ID, falseVariablesQuestions)
+            return dynamicQuestion  
         elif userResponse[-1]['questionNumber'] < self.maxIter:
             if question_ID not in questionsIDs:
-                dynamicQuestion.append(self.falseVariableQuestions[question_ID])
+                findQuestionID(question_ID, falseVariablesQuestions)
             else:
-                while question_ID in questionsIDs: 
-                    #question_ID = rd.randint(0, len(self.falseVariableQuestions) - 1)
-                    print(question_ID, "second")
+                id_already_used = True
+                while id_already_used: 
+                    question_ID = rd.randint(0, len(falseVariablesQuestions) - 1)
                     if question_ID not in questionsIDs:
-                        dynamicQuestion.append(self.falseVariableQuestions[question_ID])
-                        break
-            print("questionID", question_ID)
-            return dynamicQuestion
+                        dynamicQuestion.append(falseVariablesQuestions[question_ID])
+                        id_already_used = False
+        return dynamicQuestion   
+            
     
     def answerDefaultAnamnese(self, obj):
         current_date = datetime.now().date()
@@ -138,7 +151,7 @@ class QALogic():
         return answersConverted
 
     # def sendQuestion(self, userResponse, questionsIDs):
-    #     falseVariableQuestions = self.dbRequests.getAllFalseDefaultVariablesIds()
+    #     falseVariableQuestions = DbRequests().getAllFalseDefaultVariablesIds()
     #     dynamicQuestion = self.getDynamicQuestion(userResponse, questionsIDs)
     #     return dynamicQuestion
 
@@ -148,11 +161,16 @@ class QALogic():
         questionsAnswered=[1, 2, 3, 4, 5, 6, 7, 8, 13, 27, 25, 22, 21, 20, 19],
         answersUser=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 5, 5, 5, 5],
     ):
-        defaultVariableQuestions = self.dbRequests.getAllTrueDefaultVariablesIds()
-        petDetails = self.dbRequests.getPetDetailsbyId(pet_id)
+        dbRequests = DbRequests()
+        allVariables = dbRequests.getAllDiseaseVariablesIds()
+        allDiseases = dbRequests.getAllDiseasesIds()
+        allRules = dbRequests.getAllDiseaseRules()
+        bayesObj = Bayes(allVariables, allDiseases, allRules)
+        defaultVariableQuestions = dbRequests.getAllTrueDefaultVariablesIds()
+        petDetails = dbRequests.getPetDetailsbyId(pet_id)
         answersTrueDefaultAnamnese = self.answerDefaultAnamnese(petDetails)
         self.setQuestionAnswer(defaultVariableQuestions, answersTrueDefaultAnamnese)
         answersDynamicQuestions = self.answersDynamicQuestions(answersUser)
         self.setQuestionAnswer(questionsAnswered, answersDynamicQuestions)
-        probabilities = self.bayesObj.Solve(self.diseasesVariables_so_far, self.answers_so_far)
+        probabilities = bayesObj.Solve(self.diseasesVariables_so_far, self.answers_so_far)
         return probabilities

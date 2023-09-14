@@ -5,12 +5,13 @@ full_path = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(str(Path(full_path).parents[1]))
 
 from flask_socketio import SocketIO, emit
+from application.binarySearchKernel import questionsLogic
 from application.binarySearchKernel.qaLogic import QALogic
 from flask import session
 # from flask import request
 
 socketio = SocketIO()
-qaLogic = QALogic(15)
+
 
 @socketio.on("connect")
 def handle_connect():
@@ -32,7 +33,8 @@ def handle_disconnect():
     session.pop('questionsIDs', None)
     print("User disconnected")
 
-def send_question(userResponse, questionsIDs):    
+def send_question(userResponse, questionsIDs): 
+    qaLogic = QALogic(15)   
     question = qaLogic.getDynamicQuestion(userResponse, questionsIDs) 
     print("question sent >>>>>", question)
     emit("question", question[0])
@@ -43,4 +45,5 @@ def handle_answer(data):
     session['questionsIDs'].append(data['questionID'])
     session.modified = True
     print("Answers: >>>>>>>>> ", session['data'], session['questionsIDs'])
+    print("next is to send a question again <<<<<<<<<<>>>>>>>>>>>")
     send_question(session['data'], session['questionsIDs'])
