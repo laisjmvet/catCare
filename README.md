@@ -2,7 +2,7 @@
 
 Welcome to the Cat Care Diagnoser! This application is designed to assist cat owners in identifying potential health issues in their feline companions. Please read this README for essential information on how to set up and use the app.
 
-**Note:** This application is currently under development, and some features may not be fully functional. We appreciate your patience as I am working on improving the app.
+**Note:** This application is currently under development, and some features may not be fully functional. I appreciate your patience as I am working on improving the app.
 
 ## Table of Contents
 
