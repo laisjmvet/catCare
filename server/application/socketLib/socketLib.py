@@ -27,8 +27,7 @@ def handle_disconnect():
 
 def send_question(userResponse, questionsIDs): 
     qaLogic = QALogic(15)   
-    question = qaLogic.getDynamicQuestion(userResponse, questionsIDs) 
-    print("question sent >>>>>", question)
+    question = qaLogic.getDynamicQuestion(userResponse, questionsIDs)
     emit("question", question[0])
 
 @socketio.on("answer")

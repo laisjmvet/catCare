@@ -60,7 +60,19 @@ class QALogic():
                         question_ID = rd.randint(1, len(falseVariablesQuestions))
 
         filteredQuestion = findQuestionByID(falseVariablesQuestions)
-        if userResponse == [] or userResponse[-1]['questionNumber'] < self.maxIter:            
+        if userResponse == []: 
+            dynamicQuestion.append({"id": 0, "question": "To help diagnose your cat's issue accurately, please select the system where you've noticed the problem:"})
+            # Skin and Coat (Dermatological)
+            # Digestive
+            # Musculoskeletal
+            # Respiratory
+            # Ocular
+            # Urinary
+            # Nervous
+            # Reproductive
+            # I am not sure
+            return dynamicQuestion
+        elif userResponse[-1]['questionNumber'] < self.maxIter:            
             if filteredQuestion[0] not in questionsIDs: 
                 dynamicQuestion.append(filteredQuestion[1])
                 return dynamicQuestion             
