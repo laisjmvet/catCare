@@ -76,7 +76,21 @@ class DbRequests:
             rulesMatrix[rule_dict["disease_id"]][
                 rule_dict["diseasesVariables_id"]
             ] = CalculateAnswer(rule_dict["rules"])
-        
+        print(rulesMatrix)
+        return rulesMatrix
+    
+    def getFalseDiseaseRules(self):
+        diseaseRulesQuery =  UsersAnswersCount.query.join(Variables, UsersAnswersCount.diseasesVariables_id == Variables.id).filter(Variables.defaultQuestion == False).all()
+        lenDiseaseVariables = len(Variables.query.filter_by(defaultQuestion=False).all())
+        lenDiseases = len(Diseases.query.all())
+        rulesMatrix = np.zeros((lenDiseases + 1, lenDiseaseVariables + 1))
+        print(len(rulesMatrix[0]) +1 , lenDiseaseVariables+1)
+
+        for i in range(lenDiseases):
+            for j in range(lenDiseaseVariables):
+                rule_dict = diseaseRulesQuery[j].as_dict_for_probability_function()
+                rulesMatrix[i + 1][j + 1] = CalculateAnswer(rule_dict["rules"])
+        print(rulesMatrix)
         return rulesMatrix
 
     # GET THE PET DETAILS BY ID

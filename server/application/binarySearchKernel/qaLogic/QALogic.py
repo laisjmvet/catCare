@@ -6,7 +6,7 @@ import random as rd
 full_path = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(str(Path(full_path).parents[2]))
 
-from application.binarySearchKernel.numericLogic import Bayes
+from application.binarySearchKernel.numericLogic import Bayes, QuestionSelection
 from application.binarySearchKernel.dbRequests import DbRequests
 from datetime import *
 
@@ -16,11 +16,6 @@ class QALogic():
         self.maxIter = maxIter
         self.diseasesVariables_so_far = []
         self.answers_so_far = []
-        # self.allVariables = self.dbRequests.getAllDiseaseVariablesIds()
-        # self.allDiseases = self.dbRequests.getAllDiseasesIds()
-        # self.allRules = self.dbRequests.getAllDiseaseRules()
-        #self.falseVariableQuestions = self.dbRequests.getAllFalseDefaultVariablesIds()
-        # self.bayesObj = Bayes(self.allVariables, self.allDiseases, self.allRules)
 
     def as_dict(self):
         return {
@@ -44,8 +39,10 @@ class QALogic():
     def getDynamicQuestion(self, userResponse, questionsIDs):
 
         falseVariablesQuestions = self.dbRequests.getAllFalseDefaultVariablesIds()
+        diseasesRules = self.dbRequests.getFalseDiseaseRules()
         dynamicQuestion = []
         questionsIDs = [*questionsIDs]
+        questionSelection = QuestionSelection(diseasesRules)
 
         #Sometimes the random number selected doesnt have an id, so i am creating a while loop to find a one that matches
         def findQuestionByID(falseVariablesQuestions):
@@ -62,6 +59,8 @@ class QALogic():
         filteredQuestion = findQuestionByID(falseVariablesQuestions)
         if userResponse == []: 
             dynamicQuestion.append({"id": 0, "question": "To help diagnose your cat's issue accurately, please select the system where you've noticed the problem:"})
+            print(questionSelection.findStandardDeviation())
+ 
             # Skin and Coat (Dermatological)
             # Digestive
             # Musculoskeletal
@@ -86,7 +85,8 @@ class QALogic():
                         id_already_used = False
                         return dynamicQuestion
         else:
-            return 'no more questions'     
+            return 'no more questions'
+            
     
     def answerDefaultAnamnese(self, obj):
         current_date = datetime.now().date()
