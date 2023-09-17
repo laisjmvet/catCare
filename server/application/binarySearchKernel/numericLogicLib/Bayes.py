@@ -1,21 +1,5 @@
 import numpy as np
 
-def CalculateAnswer(AnswerCounts):
-    if sum(AnswerCounts) == 0.0:
-        # Disease nor cataloged yet.
-        return 0.5
-
-    AvgAnswer = (
-        AnswerCounts[0] * 0.00
-        + AnswerCounts[1] * 0.25
-        + AnswerCounts[2] * 0.50
-        + AnswerCounts[3] * 0.75
-        + AnswerCounts[4] * 1.0
-    )
-    AvgAnswer /= sum(AnswerCounts)
-    return AvgAnswer
-
-
 class Bayes:
     def __init__(self, allDiseasesVariables, allDiseases, allRules):
         self.allDiseasesVariables = np.copy(allDiseasesVariables)

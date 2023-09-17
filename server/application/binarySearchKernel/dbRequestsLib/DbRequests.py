@@ -1,14 +1,4 @@
-import os
-import sys
-from pathlib import Path
-
-full_path = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(str(Path(full_path).parents[2]))
-
-# Import necessary modules
 from datetime import *
-from application.models import Variables, Diseases, UsersAnswersCount, Pets
-from application.binarySearchKernel.numericLogic.Bayes import CalculateAnswer
 import numpy as np
 
 class DbRequests:
@@ -65,33 +55,28 @@ class DbRequests:
 
         return all_false_default_variables
 
-    def getAllDiseaseRules(self):
-        diseaseRulesQuery =  UsersAnswersCount.query.all()
-        lenDiseaseVariables = len(Variables.query.all())
-        lenDiseases = len(Diseases.query.all())
-        rulesMatrix = np.zeros((lenDiseases + 1, lenDiseaseVariables + 1))
+    # def getAllDiseaseRules(self):
+    #     diseaseRulesQuery =  UsersAnswersCount.query.all()
+    #     lenDiseaseVariables = len(Variables.query.all())
+    #     lenDiseases = len(Diseases.query.all())
+    #     rulesMatrix = np.zeros((lenDiseases + 1, lenDiseaseVariables + 1))
 
-        for rule in diseaseRulesQuery:
-            rule_dict = rule.as_dict_for_probability_function()
-            rulesMatrix[rule_dict["disease_id"]][
-                rule_dict["diseasesVariables_id"]
-            ] = CalculateAnswer(rule_dict["rules"])
-        print(rulesMatrix)
+    #     for rule in diseaseRulesQuery:
+    #         rule_dict = rule.as_dict_for_probability_function()
+    #         rulesMatrix[rule_dict["disease_id"]][
+    #             rule_dict["diseasesVariables_id"]
+    #         ] = calculateAnswer(rule_dict["rules"])
+    #     print(rulesMatrix)
         return rulesMatrix
     
     def getFalseDiseaseRules(self):
         diseaseRulesQuery =  UsersAnswersCount.query.join(Variables, UsersAnswersCount.diseasesVariables_id == Variables.id).filter(Variables.defaultQuestion == False).all()
-        lenDiseaseVariables = len(Variables.query.filter_by(defaultQuestion=False).all())
-        lenDiseases = len(Diseases.query.all())
-        rulesMatrix = np.zeros((lenDiseases + 1, lenDiseaseVariables + 1))
-        print(len(rulesMatrix[0]) +1 , lenDiseaseVariables+1)
+        diseasesRules = [] 
 
-        for i in range(lenDiseases):
-            for j in range(lenDiseaseVariables):
-                rule_dict = diseaseRulesQuery[j].as_dict_for_probability_function()
-                rulesMatrix[i + 1][j + 1] = CalculateAnswer(rule_dict["rules"])
-        print(rulesMatrix)
-        return rulesMatrix
+        for rule in diseaseRulesQuery:
+            rule_dict = rule.as_dict_for_probability_function()
+            diseasesRules.append(rule_dict)
+        return diseasesRules
 
     # GET THE PET DETAILS BY ID
     def getPetDetailsbyId(self, petID):

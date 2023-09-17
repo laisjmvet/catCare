@@ -1,14 +1,4 @@
-import os
-import sys
-from pathlib import Path
-
-full_path = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(str(Path(full_path).parents[1]))
-print(str(Path(full_path).parents[1]))
-
 from flask import Blueprint, request, jsonify
-from application.models import Diary, Diseases, db
-from application.binarySearchKernel.qaLogic import QALogic
 from datetime import *
 
 diary = Blueprint("diary", __name__)

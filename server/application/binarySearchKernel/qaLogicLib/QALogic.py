@@ -1,13 +1,4 @@
-import os
-import sys
-from pathlib import Path
 import random as rd
-
-full_path = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(str(Path(full_path).parents[2]))
-
-from application.binarySearchKernel.numericLogic import Bayes, QuestionSelection
-from application.binarySearchKernel.dbRequests import DbRequests
 from datetime import *
 
 class QALogic():

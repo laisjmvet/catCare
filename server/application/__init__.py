@@ -1,37 +1,44 @@
-""" application factory 
-function to call with diff setting (dev or testing environment)
-run different version of the app (multiple instances with different config)
-setup app factory """
-from flask import Flask, session
+import os
+import sys
+sys.path.append(str(os.path.dirname(os.path.abspath(__file__))))
+
+# Application imports
+import appointments
+import binarySearchKernel
+import diary
+import diseases
+import homepage
+import login
+import pets
+import socketLib
+import user
+import user_answer_count
+import variables
+from db import *
+from models import *
+
+# Flask imports
+from flask import Flask
 from flask_cors import CORS
-import os  # inbuilt python module
-from dotenv import load_dotenv
-from .db import db
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate  # db migration
-from application.socketLib import socketLib
 from flask_session import Session
 
+# Other imports
+from dotenv import load_dotenv
 load_dotenv()
 
-# methods from Flask-Login for session management.
-from flask_login import (
-    UserMixin,
-    login_user,
-    LoginManager,
-    current_user,
-    logout_user,
-    login_required,
-)
-
-# create a flask_login instance
-login_manager = LoginManager()
-login_manager.session_protection = "strong"
-login_manager.login_view = "login"
-login_manager.login_message_category = "info"
+# # methods from Flask-Login for session management.
+# from flask_login import (
+#     UserMixin,
+#     login_user,
+#     LoginManager,
+#     current_user,
+#     logout_user,
+#     login_required,
+# )
 
 # create an instance of SQLAlchemy, Migrate, and Bcrypt.
-
 migrate = Migrate()
 bcrypt = Bcrypt()
 sessionConfig = Session()
@@ -49,7 +56,7 @@ def create_app(env=None):
     app.config['SESSION_USE_SIGNER'] = True  # Enable cookie signing
     app.config['SESSION_KEY_PREFIX'] = 'your_prefix'  # Set a unique prefix
 
-    login_manager.init_app(app)
+    login.login_manager.init_app(app)
     bcrypt.init_app(app)
 
     # config setup for different environment
@@ -66,32 +73,20 @@ def create_app(env=None):
     # initialising the db and connecting to app
     db.init_app(app)
     sessionConfig.init_app(app)
-    socketLib.socketio.init_app(app, cors_allowed_origins="*", manage_session=True)
+    socketLib.socket.socketio.init_app(app, cors_allowed_origins="*", manage_session=True)
     migrate.init_app(app, db)
     app.app_context().push()
     CORS(app, support_credentials=True)
-
-    # BLUEPRINTS
-    from application.homepage.routes import homepage
-    from application.login.routes import auth
-    from application.appointments.routes import appointment
-    from application.user.routes import user
-    from application.pets.routes import pet
-
-    from application.diary.routes import diary
-    from application.variables.routes import variables
-    from application.user_answer_count.routes import users_answers_count
-    from application.diseases.routes import diseases
-
+ 
     # Blueprints registration
-    app.register_blueprint(user)
-    app.register_blueprint(homepage)
-    app.register_blueprint(auth)
-    app.register_blueprint(appointment)
-    app.register_blueprint(pet)
-    app.register_blueprint(diary)
-    app.register_blueprint(variables)
-    app.register_blueprint(users_answers_count)
-    app.register_blueprint(diseases)
+    app.register_blueprint(user.user)
+    app.register_blueprint(homepage.homepage)
+    app.register_blueprint(login.auth)
+    app.register_blueprint(appointments.appointment)
+    app.register_blueprint(pets.pet)
+    app.register_blueprint(diary.diary)
+    app.register_blueprint(variables.variables)
+    app.register_blueprint(user_answer_count.users_answers_count)
+    app.register_blueprint(diseases.diseases)
 
     return app

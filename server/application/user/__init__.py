@@ -1,5 +1,6 @@
-""" This file can be empty or contain minimal content. 
-Its purpose is to make the directory a Python package, allowing you to organize your code 
-and easily import modules from this directory. """
+import os
+import sys
 
-#from application.user.routes import user
+sys.path.append(str(os.path.dirname(os.path.abspath(__file__))))
+
+from .routes import *

@@ -1,9 +1,8 @@
 from flask import Blueprint, request, jsonify, session
 from flask_login import login_user
 from werkzeug.security import check_password_hash
-from application.models import Users  # Import the User model
-from application import login_manager  # Import the login_manager instance
 from flask_bcrypt import check_password_hash
+from login_manager import login_manager
 
 auth = Blueprint("auth", __name__)
 
