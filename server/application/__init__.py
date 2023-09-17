@@ -28,17 +28,6 @@ from flask_session import Session
 from dotenv import load_dotenv
 load_dotenv()
 
-# # methods from Flask-Login for session management.
-# from flask_login import (
-#     UserMixin,
-#     login_user,
-#     LoginManager,
-#     current_user,
-#     logout_user,
-#     login_required,
-# )
-
-# create an instance of SQLAlchemy, Migrate, and Bcrypt.
 migrate = Migrate()
 bcrypt = Bcrypt()
 sessionConfig = Session()
