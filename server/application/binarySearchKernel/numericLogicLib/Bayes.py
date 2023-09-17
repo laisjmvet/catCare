@@ -1,85 +1,33 @@
 import numpy as np
-import random as rd
 
-
-def CalculateAnswer(AnswerCounts):
-    if sum(AnswerCounts) == 0.0:
-        # Disease nor cataloged yet.
-        return 0.5
-
-    AvgAnswer = (
-        AnswerCounts[0] * 0.00
-        + AnswerCounts[1] * 0.25
-        + AnswerCounts[2] * 0.50
-        + AnswerCounts[3] * 0.75
-        + AnswerCounts[4] * 1.0
-    )
-    AvgAnswer /= sum(AnswerCounts)
-    return AvgAnswer
-
-
-class BayesLib:
-    def __init__(self, allDiseasesVariables, allDiseases, allRules, maxIter):
+class Bayes:
+    def __init__(self, allDiseasesVariables, allDiseases, allRules):
         self.allDiseasesVariables = np.copy(allDiseasesVariables)
         self.allDiseases = np.copy(allDiseases)
-        self.allRules = np.copy(allRules)
-        self.maxIter = maxIter
-        self.diseasesVariables_so_far = []
-        self.answers_so_far = []
-        self.Iter = 0
+        self.allRules = np.copy(allRules) 
+        self.Iter = 0         
 
-    def as_dict(self):
-        return {
-            "diseasesVariables_so_far": self.diseasesVariables_so_far,
-            "answers_so_far": self.answers_so_far,
-        }
-
-    def setQuestionAnswer(self, variableID, answer):
-        if type(variableID) == type(list()) or type(answer) == type(list()):
-            if len(variableID) != len(answer):
-                print("Error: List with different sizes.")
-
-            for var in variableID:
-                self.diseasesVariables_so_far.append(var)
-            for ans in answer:
-                self.answers_so_far.append(ans)
-        else:
-            self.diseasesVariables_so_far.append(variableID)
-            self.answers_so_far.append(answer)
-
-    def getRandomQuestions(self, falseVariableQuestions):
-        # Start with a random algorithm
-        randomQuestions = []
-        idx = []
-        while len(randomQuestions) < self.maxIter:
-            question_Idx = rd.randint(0, len(falseVariableQuestions) - 1)
-            print(question_Idx)
-            if question_Idx not in idx:
-                idx.append(question_Idx)
-                randomQuestions.append(falseVariableQuestions[question_Idx])
-        return randomQuestions
-
-    def Solve(self):
+    def Solve(self, diseasesVariables_so_far, answers_so_far):
         # Calculating Probabilities based on Bayes theorem
-        probabilities = self.CalculateProbabilites()
+        probabilities = self.CalculateProbabilities(diseasesVariables_so_far, answers_so_far)
         probabilities = sorted(probabilities, key=lambda d: d["Likelihood"])
         probabilities.reverse()
         return probabilities[:3]
 
-    def CalculateProbabilites(self):
+    def CalculateProbabilities(self, diseasesVariables_so_far, answers_so_far):
         # Calculating the Disease Likelihood for all Diseases
         DisLikelihood = np.ones(len(self.allDiseases) + 1)
         for dis in range(len(self.allDiseases)):
-            for ans in range(len(self.answers_so_far)):
+            for ans in range(len(answers_so_far)):
                 LikeCalc = 0.0
                 try:
                     LikeCalc = self.allRules[self.allDiseases[dis]][
-                        self.diseasesVariables_so_far[ans]
+                        diseasesVariables_so_far[ans]
                     ]
                 except:
                     LikeCalc = 0.5
                 DisLikelihood[self.allDiseases[dis]] *= max(
-                    0.01, 1.0 - abs(LikeCalc - self.answers_so_far[ans])
+                    0.01, 1.0 - abs(LikeCalc - answers_so_far[ans])
                 )
 
         ProbabilitiesList = []

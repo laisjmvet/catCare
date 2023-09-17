@@ -3,5 +3,6 @@ import sys
 
 sys.path.append(str(os.path.dirname(os.path.abspath(__file__))))
 
-from BayesLib import *
-from logicUtilityFunctions import *
+from dbRequestsLib import *
+from numericLogicLib import *
+from qaLogicLib import *

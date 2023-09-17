@@ -1,9 +1,8 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, session
 from flask_login import login_user
 from werkzeug.security import check_password_hash
-from application.models import Users  # Import the User model
-from application import login_manager  # Import the login_manager instance
 from flask_bcrypt import check_password_hash
+from login_manager import login_manager
 
 auth = Blueprint("auth", __name__)
 
@@ -26,6 +25,13 @@ def login():
     if check_password_hash(user.password, password):
         # Use the login_user function to log in the user
         login_user(user)
+        # session['data'] = []
+        # session.modified = True
+        # answers = session.get('data')
+        # if answers is not None:
+        #     print(f'Answers received: {answers}')
+        # else:
+        #     print('No data in the session', 404 )
         return (
             jsonify(
                 id=user.id,
@@ -35,6 +41,15 @@ def login():
                 password=user.password,
             ),
             200,
-        )
+            )    
+    
     # Return an error response if authentication fails
     return jsonify({"message": "Invalid email or password"}), 401
+
+@auth.route('/logout', methods=['GET'])
+def logout():
+    # Clear session data    
+    # print("logout", session['data'])
+    # session.pop('data', None)
+    # session.modified = True
+    return jsonify({"message": "Logout successful"}), 200

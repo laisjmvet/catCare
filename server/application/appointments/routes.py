@@ -1,8 +1,6 @@
 from flask import request, jsonify, Blueprint, render_template
-from application.models import Appointments, Pets, db
 
 appointment = Blueprint("appointment", __name__)
-
 
 # List All Appointments
 @appointment.route("/appointments", methods=["GET"])

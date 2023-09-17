@@ -11,17 +11,10 @@ from application import *
 import pandas as pd
 
 # Create an engine and bind it to a session
-DATABASE_URL2="postgresql://etijyuzx:rSbIdeGUOBQ9ZDy4EVwCDwu7K6d2adPa@trumpet.db.elephantsql.com/etijyuzx"
+DATABASE_URL2= "PLACE YOUR DB URL HERE"
 engine = create_engine(DATABASE_URL2)
 Session = sessionmaker(bind=engine)
 session = Session()
-
-# dfDiary = pd.read_csv('Diary.csv')
-# dfDiary.rename_axis('id', inplace=True)
-# dfDiary.reset_index(drop=True, inplace=True)
-# dfDiary.index += 1  # Shift the index by 1 to start from 1
-# dfDiary.to_sql('diary', con=engine, if_exists='append', index=False)
-
 
 dfDiseasesVariables = pd.read_csv('DiseasesVariables.csv')
 # Rename the index column to 'id' and reset the index to start from 1

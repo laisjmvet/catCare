@@ -10,41 +10,16 @@ import classNames from "classnames";
 export default function QuestionContainer({ cat }) {
   const {
     questionNumber,
-    setQuestionNumberquestions,
-    questions,
-    setQuestions,
-    answers,
-    setAnswers,
     animation,
     setDifferentAnswersIndex,
-    differentAnswersIndex,
+    dynamicQuestion
   } = useSymptoms();
   const { dark, setDark } = useCredentials();
 
-  async function getQuestions() {
-    const response = await fetch(
-      "https://catcareserver.onrender.com/variables_questions"
-    );
-    if (response.status == 200) {
-      const data = await response.json();
-      setQuestions(data);
-    } else {
-      console.log("Question fetch failed");
-    }
-  }
-
-  function arrayMap() {
-    console.log(questions);
-    let pos = questions
-      .map(function(e) {
-        return e.id;
-      })
-      .indexOf(35);
+  function handleQuestionNumber() {
+    let pos = 1
     setDifferentAnswersIndex(pos);
   }
-  useEffect(() => {
-    getQuestions();
-  }, []);
 
   const toolTip = `Gender: ${cat.sex}, Breed: ${cat.breed}, DOB: ${cat.dob}, Outdoor: ${cat.outdoor}, Neutered: ${cat.neutered}, Diet: ${cat.diet}, Contact with other pets: ${cat.contactWithPets}`;
 
@@ -64,7 +39,7 @@ export default function QuestionContainer({ cat }) {
         </Tooltip>
       </div>
       <div className={style["question-container"]}>
-        {questions.length === 0 ? null : questionNumber == 15 ? (
+        {dynamicQuestion.length === 0 ? null : questionNumber == 15 ? (
           <Results cat={cat} />
         ) : (
           <h1
@@ -79,9 +54,9 @@ export default function QuestionContainer({ cat }) {
               color: dark ? "whitesmoke" : "#121212",
             }}
           >
-            {questions.length === 0 ? null : arrayMap()}Q{questionNumber + 1}:{" "}
-            {questions[questionNumber].question}
-            {console.log(differentAnswersIndex)}
+            {dynamicQuestion.length === 0 ? null : handleQuestionNumber()}Q{questionNumber + 1}:{" "}
+            {dynamicQuestion.question}
+            {/* {console.log(differentAnswersIndex)} */}
           </h1>
         )}
       </div>

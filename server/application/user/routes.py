@@ -1,10 +1,7 @@
-from application import db
 from flask import request, jsonify, Blueprint
-from application.models import Users
 from flask_bcrypt import generate_password_hash
 
 user = Blueprint("users", __name__)
-
 
 @user.route("/")
 def index():
@@ -30,7 +27,6 @@ def index():
 def create_user():
     # retrieved data from client
     data = request.json
-    print(data)
     # created new user using the data
     new_user = Users(
         first_name=data["first_name"],
