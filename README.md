@@ -1,6 +1,6 @@
-# Cat Health Diagnostic App
+# Cat Care App
 
-Welcome to the Cat Health Diagnostic App! This application is a MVP designed to assist cat owners in identifying potential health issues in their feline companions. Please read this README for essential information on how to set up and use the app.
+Welcome to the Cat Care App! This application is a MVP designed to assist cat owners in identifying potential health issues in their feline companions. Please read this README for essential information on how to set up and use the app.
 
 ## Table of Contents
 
@@ -16,7 +16,7 @@ Welcome to the Cat Health Diagnostic App! This application is a MVP designed to 
 
 ## Introduction
 
-The Cat Health Diagnostic App is a web-based platform that enables users to answer a series of questions about their cat's health. Based on the user's responses, the app calculates the three most probable diseases that their cat may be experiencing. It's important to note that while the app can provide valuable insights, it should not replace a professional veterinarian's examination. Always seek proper veterinary care for your cat's health needs.
+The Cat Care App is a web-based platform that enables users to answer a series of questions about their cat's health. Based on the user's responses, the app calculates the three most probable diseases that their cat may be experiencing. It's important to note that while the app can provide valuable insights, it should not replace a professional veterinarian's examination. Always seek proper veterinary care for your cat's health needs.
 
 ## Features
 

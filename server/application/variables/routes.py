@@ -1,4 +1,6 @@
 from flask import Blueprint, request, jsonify, session
+from models import Variables
+
 variables = Blueprint("variables", __name__)
 
 # Create a new variable

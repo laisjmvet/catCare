@@ -1,5 +1,6 @@
 import random as rd
 from datetime import *
+from binarySearchKernel import DbRequests, QuestionSelection
 
 class QALogic():
     def __init__(self, maxIter):
@@ -37,20 +38,31 @@ class QALogic():
 
         #Sometimes the random number selected doesnt have an id, so i am creating a while loop to find a one that matches
         def findQuestionByID(falseVariablesQuestions):
-            id_not_found = True
-            question_ID = rd.randint(1, len(falseVariablesQuestions))
-            while id_not_found:                
+            for key in questionSelection.findStandardDeviation().items():                
                 for question in falseVariablesQuestions:
-                    if question['id'] == question_ID: 
-                        id_not_found = False
-                        return [question_ID, question]
+                    if question['id'] == key[0] and key[0] not in questionsIDs:
+                        dynamicQuestion.append(question)
+                        print(key[0], "<<<<<<<<<<<<<<<<<<", falseVariablesQuestions)
+                        return [key[0], question]
                     else:
-                        question_ID = rd.randint(1, len(falseVariablesQuestions))
+                        continue 
+            # id_not_found = True
+            # question_ID = rd.randint(1, len(falseVariablesQuestions))
+            # while id_not_found:                
+            #     for question in falseVariablesQuestions:
+            #         if question['id'] == question_ID: 
+            #             id_not_found = False
+            #             return [question_ID, question]
+            #         else:
+            #             question_ID = rd.randint(1, len(falseVariablesQuestions))
+
+                
+
 
         filteredQuestion = findQuestionByID(falseVariablesQuestions)
         if userResponse == []: 
-            dynamicQuestion.append({"id": 0, "question": "To help diagnose your cat's issue accurately, please select the system where you've noticed the problem:"})
-            print(questionSelection.findStandardDeviation())
+            dynamicQuestion.append(filteredQuestion[0])
+            # dynamicQuestion.append({"id": 0, "question": "To help diagnose your cat's issue accurately, please select the system where you've noticed the problem:"})
  
             # Skin and Coat (Dermatological)
             # Digestive

@@ -1,5 +1,6 @@
 from datetime import *
 import numpy as np
+from models import Variables, Diseases, UsersAnswersCount, Pets
 
 class DbRequests:
     def __init__(self):

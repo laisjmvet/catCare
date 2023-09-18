@@ -21,7 +21,7 @@ from models import *
 from flask import Flask
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
-from flask_migrate import Migrate  # db migration
+from flask_migrate import Migrate  
 from flask_session import Session
 
 # Other imports
@@ -34,8 +34,7 @@ sessionConfig = Session()
 
 def create_app(env=None):
     # initialise the app
-    app = Flask(__name__)
-    # Flask instance
+    app = Flask(__name__)    
     app.secret_key = "secret-key"
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite://"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True

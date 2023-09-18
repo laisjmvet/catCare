@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from models import UsersAnswersCount
 
 users_answers_count = Blueprint("users_answers_count", __name__)
 

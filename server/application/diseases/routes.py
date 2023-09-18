@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from models import Diseases
 
 diseases = Blueprint("diseases", __name__)
 

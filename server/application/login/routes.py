@@ -3,9 +3,9 @@ from flask_login import login_user
 from werkzeug.security import check_password_hash
 from flask_bcrypt import check_password_hash
 from login_manager import login_manager
+from models import Users
 
 auth = Blueprint("auth", __name__)
-
 
 # Configure the user_loader callback to retrieve a user by ID
 @login_manager.user_loader
