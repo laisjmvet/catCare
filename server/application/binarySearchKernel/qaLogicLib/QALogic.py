@@ -30,67 +30,23 @@ class QALogic():
 
     def getDynamicQuestion(self, userResponse, questionsIDs):
 
-        falseVariablesQuestions = self.dbRequests.getAllFalseDefaultVariablesIds()
-        diseasesRules = self.dbRequests.getFalseDiseaseRules()
-        dynamicQuestion = []
-        questionsIDs = [*questionsIDs]
-        questionSelection = QuestionSelection(diseasesRules)
+        falseVariablesQuestions = self.dbRequests.getAllFalseDefaultVariablesIds() #getting all questions
+        diseasesRules = self.dbRequests.getFalseDiseaseRules() #getting all rules from the questions that are not default
+        dynamicQuestion = [] #keeping track of the questions already sent
+        questionsIDs = [*questionsIDs] #keeping track of the questions ids already sent
+        questionSelection = QuestionSelection(diseasesRules) #initializing the class
 
-        #Sometimes the random number selected doesnt have an id, so i am creating a while loop to find a one that matches
-        def findQuestionByID(falseVariablesQuestions):
+        if userResponse == [] or userResponse[-1]['questionNumber'] < self.maxIter:
             for key in questionSelection.findStandardDeviation().items():                
                 for question in falseVariablesQuestions:
-                    if question['id'] == key[0] and key[0] not in questionsIDs:
+                    if question['id'] == key[0] and key[0] not in questionsIDs: #the questions sent must meet the id and not repeat
                         dynamicQuestion.append(question)
-                        print(key[0], "<<<<<<<<<<<<<<<<<<", falseVariablesQuestions)
-                        return [key[0], question]
+                        return dynamicQuestion
                     else:
                         continue 
-            # id_not_found = True
-            # question_ID = rd.randint(1, len(falseVariablesQuestions))
-            # while id_not_found:                
-            #     for question in falseVariablesQuestions:
-            #         if question['id'] == question_ID: 
-            #             id_not_found = False
-            #             return [question_ID, question]
-            #         else:
-            #             question_ID = rd.randint(1, len(falseVariablesQuestions))
-
-                
-
-
-        filteredQuestion = findQuestionByID(falseVariablesQuestions)
-        if userResponse == []: 
-            dynamicQuestion.append(filteredQuestion[0])
-            # dynamicQuestion.append({"id": 0, "question": "To help diagnose your cat's issue accurately, please select the system where you've noticed the problem:"})
- 
-            # Skin and Coat (Dermatological)
-            # Digestive
-            # Musculoskeletal
-            # Respiratory
-            # Ocular
-            # Urinary
-            # Nervous
-            # Reproductive
-            # I am not sure
-            return dynamicQuestion
-        elif userResponse[-1]['questionNumber'] < self.maxIter:            
-            if filteredQuestion[0] not in questionsIDs: 
-                dynamicQuestion.append(filteredQuestion[1])
-                return dynamicQuestion             
-            else:                
-                #while loop to not get repeated ids. 
-                id_already_used = True
-                while id_already_used: 
-                    newFilteredQuestion = findQuestionByID(falseVariablesQuestions)
-                    if newFilteredQuestion[0] not in questionsIDs:
-                        dynamicQuestion.append(newFilteredQuestion[1])
-                        id_already_used = False
-                        return dynamicQuestion
         else:
             return 'no more questions'
             
-    
     def answerDefaultAnamnese(self, obj):
         current_date = datetime.now().date()
         age = datetime.strptime(str(obj["dob"]), "%Y-%m-%d")
